@@ -3,8 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <style>
+        body {
+            margin:0px;
+            padding:0px;
+            width:100%;
+            font-family: Norasi;
+        }
+        div#app {
+            width:100%;
+            margin:0px;
+            padding:0px;
+        }
+        div#container {
+            width:80%;
+            margin:auto;
+            margin-top:50px;
+        }
+        .card {
+            border:2px solid grey;
+            box-shadow: 1px 3px 1px grey;
+            padding:40px;
+            color:grey;
+            border-radius:5px;
+            text-align:center;
+        }
+        .card:hover {
+
+        }
+        .card h1 a:link {
+            color:white;
+            text-decoration:none;
+        }
+        .card_row {
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 10px;
+            margin-bottom:10px;
+        }
+        .card h1 {
+            font-size:1.5rem;
+        }
+        #create_mail {
+            background-color: #0d142c;
+        }
+        #read_mail {
+            background-color: darkseagreen;
+
+        }
+        #delete_mail {
+            background-color:cadetblue;
+        }
+        #sign_out {
+            background-color:darkcyan;
+        }
+
+    </style>
 </head>
 <body>
 
+    <div id="app">
+
+        <div id="container">
+
+            <div id="card_holder">
+
+                <div class="card_row">
+
+                     <div class="card" id="create_mail">
+                        <h1>
+                            <a href="#">CREATE MAIL</a>
+                        </h1>
+                    </div>
+
+                     <div class="card" id="read_mail">
+                        <h1>
+                            <a href="#">READ MAIL</a>
+                        </h1>
+                    </div>
+
+                </div>
+
+                <div class="card_row">
+
+                     <div class="card" id="delete_mail">
+                        <h1>
+                            <a href="#">DELETE MAIL</a>
+                        </h1>
+                    </div>
+
+                     <div class="card" id="sign_out">
+                        <h1>
+                            <a href="#">SIGN OUT</a>
+                        </h1>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

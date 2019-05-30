@@ -1,4 +1,4 @@
-import imaplib,smtplib, ssl
+import imaplib, smtplib, ssl
 from django.shortcuts import render
 from .forms import Login, Message
 
