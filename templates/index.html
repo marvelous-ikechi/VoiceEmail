@@ -7,8 +7,16 @@
 </head>
 <body>
 
-<form class="item-container" method="post" action="/home/">
+<form class="item-container" method='post' action="/home/">
+
+         <div  class="form__error">
+            {{ exception }}
+        </div>
+         <div  class="form__error">
+            {{ error }}
+        </div>
         <h4>Login</h4>
+
         {%  csrf_token %}
 
         <div class="form__group">
@@ -25,7 +33,6 @@
             <input type="submit" name="submit" value="Login">
 
         </div>
-
 
 
 

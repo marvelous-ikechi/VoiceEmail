@@ -12,17 +12,6 @@ context = ssl.create_default_context()
 
 
 def index(request):
-    if request.method == 'POST':
-        form = Login()
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            try:
-                with smtplib.SMTP_SSL(host, port, context=context) as server:
-                    server.login(email, password)
-            except Exception as e:
-                return render(request, 'index.html', {'exception': e})
-
     return render(request, 'index.html', {'form': login_form, })
 
 
@@ -69,4 +58,18 @@ def delete_mail(request):
 
 
 def home_page(request):
-    return render(request, 'home_page.html')
+    if request.method == 'POST':
+        form = Login(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            try:
+                with smtplib.SMTP_SSL(host, port, context=context) as server:
+                    server.login(email, password)
+                    return render(request, 'home_page.html')
+            except:
+                return render(request, 'index.html', {'exception': 'Invalid details', 'form': login_form})
+    else:
+        return render(request, 'index.html', {"error": 'your request type is invalid', 'form': login_form })
+
+
