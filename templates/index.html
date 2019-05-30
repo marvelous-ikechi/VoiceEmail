@@ -1,0 +1,35 @@
+{% load static %}
+<!Doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title></title>
+</head>
+<body>
+
+<form class="item-container" method="post" action="/home/">
+        <h4>Login</h4>
+        {%  csrf_token %}
+
+        <div class="form__group">
+            <label for="username">{{ form.email.label }}</label>
+            {{ form.email}}
+        </div>
+
+        <div  class="form__group">
+             <label for="password">{{ form.password.label }}</label>
+             {{ form.password}}
+
+        </div>
+        <div  class="form__group" id="submit__group">
+            <input type="submit" name="submit" value="Login">
+
+        </div>
+
+
+
+
+</form>
+
+</body>
+</html>

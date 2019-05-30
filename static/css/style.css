@@ -1,0 +1,40 @@
+
+body{
+    background-color:#0d142c;
+}
+.item-container{
+    width: 400px;
+    min-height: 200px;
+    margin: 0 auto;
+	font-size: 22px;
+    color:grey;
+    font-family: monospace;
+    margin-top:100px;
+    border-radius:10px;
+    border:0.5px ridge grey;
+    padding:30px;
+
+
+}
+
+.form__group {
+    display:grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-column-gap: 10px;
+    margin-bottom:10px;
+}
+
+#submit__group {
+    display:block;
+    float:right;
+
+}
+input[type="submit"] {
+    background-color: cadetblue;
+    color:white;
+    padding:5px 10px;
+    outline:none;
+    border:none;
+    border-radius:5px;
+    margin-right:0px;
+}
