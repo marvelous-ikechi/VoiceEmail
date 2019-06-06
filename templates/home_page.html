@@ -1,64 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script rel="script" src="{% static 'js/script.js' %}"></script>
     <meta charset="UTF-8">
     <title>Home</title>
-    <style>
-        body {
-            margin:0px;
-            padding:0px;
-            width:100%;
-            font-family: Norasi;
-        }
-        div#app {
-            width:100%;
-            margin:0px;
-            padding:0px;
-        }
-        div#container {
-            width:80%;
-            margin:auto;
-            margin-top:50px;
-        }
-        .card {
-            border:2px solid grey;
-            box-shadow: 1px 3px 1px grey;
-            padding:40px;
-            color:grey;
-            border-radius:5px;
-            text-align:center;
-        }
-        .card:hover {
-
-        }
-        .card h1 a:link {
-            color:white;
-            text-decoration:none;
-        }
-        .card_row {
-            display:grid;
-            grid-template-columns: 1fr 1fr;
-            grid-column-gap: 10px;
-            margin-bottom:10px;
-        }
-        .card h1 {
-            font-size:1.5rem;
-        }
-        #create_mail {
-            background-color: #0d142c;
-        }
-        #read_mail {
-            background-color: darkseagreen;
-
-        }
-        #delete_mail {
-            background-color:cadetblue;
-        }
-        #sign_out {
-            background-color:darkcyan;
-        }
-
-    </style>
 </head>
 <body>
 
@@ -70,15 +17,15 @@
 
                 <div class="card_row">
 
-                     <div class="card" id="create_mail">
+                     <div class="card" id="create_mail" onmouseenter="say('Create Mail');">
                         <h1>
-                            <a href="#">CREATE MAIL</a>
+                            <a href="{% url 'compose' %}">CREATE MAIL</a>
                         </h1>
                     </div>
 
-                     <div class="card" id="read_mail">
+                     <div class="card" id="read_mail" onmouseenter="say('Read Mail');">
                         <h1>
-                            <a href="#">READ MAIL</a>
+                            <a href="{% url 'inbox' %}">READ MAIL</a>
                         </h1>
                     </div>
 
@@ -86,15 +33,15 @@
 
                 <div class="card_row">
 
-                     <div class="card" id="delete_mail">
+                     <div class="card" id="delete_mail" onmouseenter="say('Delete Mail');">
                         <h1>
-                            <a href="#">DELETE MAIL</a>
+                            <a href="{% url 'trash' %}">DELETE MAIL</a>
                         </h1>
                     </div>
 
-                     <div class="card" id="sign_out">
+                     <div class="card" id="sign_out" onmouseenter="say('Sign out');">
                         <h1>
-                            <a href="#">SIGN OUT</a>
+                            <a href="{% url 'logout' %}">SIGN OUT</a>
                         </h1>
                     </div>
 
@@ -103,4 +50,25 @@
         </div>
     </div>
 </body>
+<script>
+
+
+    let say = function (words){
+        webSpeech(words);
+    }
+
+    let webSpeech = function(words){
+
+        let synth = window.speechSynthesis;
+        let utterance = window.SpeechSynthesisUtterance;
+        utterance.rate = 0.1;
+
+        return synth.speak(new utterance(words));
+    }
+    window.addEventListener('load',function(){
+
+     say("Welcome, You can read mail, create mail, delete mail and sign out on this page, Thank you");
+    })
+
+</script>
 </html>
