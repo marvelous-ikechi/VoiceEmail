@@ -44,7 +44,6 @@
                             <a href="{% url 'logout' %}">SIGN OUT</a>
                         </h1>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -69,6 +68,11 @@
 
      say("Welcome, You can read mail, create mail, delete mail and sign out on this page, Thank you");
     })
+
+    var recognition = new SpeechRecognition();
+    recognition.onstart = function () {
+        
+    }
 
 </script>
 </html>

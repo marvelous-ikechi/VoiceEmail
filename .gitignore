@@ -1,3 +1,13 @@
 venv
 .idea
+client_secret.json
+test.html
+caddy
+caddy.tar
+Caddyfile
+CHANGES.txt
 client.json
+LICENSES.txt
+README.txt
+runserver
+credentials.json

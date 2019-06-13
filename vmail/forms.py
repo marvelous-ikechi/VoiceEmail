@@ -7,8 +7,9 @@ class Login(forms.Form):
 
 
 class Message(forms.Form):
-    # sender's address will be imported from the Login form
-    subject = forms.CharField()
+    sender = forms.EmailField(required=False)
+    subject = forms.CharField(required=False)
     message = forms.CharField(widget=forms.Textarea)
-    recipient = forms.EmailField(required=True)
+    recipient = forms.EmailField(required=False)
+    password = forms.CharField(widget=forms.PasswordInput)
 

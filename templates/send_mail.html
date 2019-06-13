@@ -11,34 +11,57 @@
 <body>
     <div id="app">
         <div id="container">
-            <form>
+            <form class="item-container" method='post' action="/send_mail/">
 
-                <div class="form__group">
-                    <label>Recipient Email</label>
-                   <input type="text" name="recipient_name">
-                </div>
+         <div  class="form__error">
+            {{ exception }}
+        </div>
+         <div  class="form__error">
+            {{ error }}
+        </div>
+        <div  class="form__error">
+            {{ invalid }}
+        </div>
+         <div  class="form__success">
+            {{ success }}
+        </div>
 
-                <div class="form__group">
-                    <label></label>
-                    <textarea cols="30" rows="10" id="message-textarea">
+        <h4>Send Mail</h4>
 
-                    </textarea>
-                </div>
+        {%  csrf_token %}
 
-                <div class="form__group">
-                    <div></div>
-                    <input type="submit" name="submit">
-                    <p id="recording-instructions">
-                </div>
-                <div class="form__group">
-                    <div></div>
-                    <h3 style="color: azure; font-family: 'Abyssinica SIL';"><strong>Double click to start recording</strong></h3>
-                </div>
+        <div class="form__group">
+            <label for="sender">{{ form.sender.label }}</label>
+            {{ form.sender}}
+        </div>
+         <div  class="form__group">
+             <label for="recepient">{{form.recipient.label }}</label>
+             {{ form.recipient}}
+         </div>
+           <div class="form__group">
+            <label for="subject">{{ form.subject.label }}</label>
+            {{ form.subject}}
+        </div>
+         <div class="form__group">
+            <label for="messsage">{{ form.message.label }}</label>
+            {{ form.message}}
+        </div>
 
-            </form>
+
+        <div  class="form__group">
+             <label for="password">{{ form.password.label }}</label>
+             {{ form.password}}
+
+        </div>
+        <div  class="form__group" id="submit__group">
+            <input type="submit" name="submit" value="Send">
+
+        </div>
+
+
+
+</form>
         </div>
     </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

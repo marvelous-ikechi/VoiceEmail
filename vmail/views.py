@@ -1,19 +1,21 @@
+
+
 import imaplib, smtplib, ssl
-from django.shortcuts import render
-from .forms import Login, Message
+from django.shortcuts import render, HttpResponseRedirect
+from .forms import Message, Login
 
 
 # Create your views here.
 login_form = Login()
 message_form = Message()
+port = 465  # For SSL
 host = 'smtp.gmail.com'
-port = 465
 # create a secure context ssl
 context = ssl.create_default_context()
 
 
 def index(request):
-    return render(request, 'home_page.html', {'form': login_form, })
+    return render(request, 'index.html', {'form': login_form, })
 
 
 def home_page(request):
@@ -22,63 +24,60 @@ def home_page(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+
             try:
                 with smtplib.SMTP_SSL(host, port, context=context) as server:
                     server.login(email, password)
                     return render(request, 'home_page.html')
-            except:
-                return render(request, 'index.html', {'exception': 'Invalid details', 'form': login_form})
-    else:
-        return render(request, 'index.html', {"error": 'your request type is invalid', 'form': login_form })
+            except Exception as e:
+                return render(request, 'index.html', {'exception': e, 'form': login_form})
+    return render(request, 'index.html', {"error": 'your request type is invalid', 'form': login_form })
+
+
+def compose_view(request):
+    return render(request, "send_mail.html", {'form': message_form})
 
 
 def send_mail(request):
+    if request.method == 'POST':
+        form = Message(request.POST)
+        print('entered first if')
+        if form.is_valid():
+            sender = form.cleaned_data['sender']
+            password = form.cleaned_data['password']
+            message = form.cleaned_data['message']
+            recipient = form.cleaned_data['recipient']
+            try:
+                with smtplib.SMTP_SSL(host, port, context=context) as server:
+                    server.login(sender, password)
+                    server.sendmail(sender, recipient, message)
+                    print(sender,message,recipient,password)
+                return render(request, 'send_mail.html', {'success':"mail sent", 'form':message_form})
 
-    sender = login_form.cleaned_data['email']
-    password = login_form.cleaned_data['password']
-    recipient = message_form.cleaned_data['recipient']
-    message = message_form.cleaned_data['message']
-    # Try to log in to server and send email
-    try:
-        server = smtplib.SMTP(host, port)
-        server.starttls(context=context)  # Secure the connection
-        server.login(sender, password)
-        server.send_message(sender, recipient, message )
-        # TODO: Send email here
-    except Exception as e:
-        # Print any error messages to stdout
-        print(e)
-    finally:
-        server.quit()
-    return render(request, 'send_mail.html', {'login_form': login_form, 'message_form': message_form})
-
-
+            except:
+                return render(request, 'send_mail.html', {'exception':"sorry, something isn't right!", 'form': message_form})
+        else:
+            print('out of second if')
+            return render(request, 'send_mail.html', {'invalid': 'invalid form', 'form': message_form})
+    print('outside if')
+    return render(request, 'send_mail.html.html', {"error": 'your request type is invalid', 'form': message_form })
 
 
 def view_mail(request):
     return render(request, 'mails.html')  # {'message': message, 'text': text })
 
-"""""
-    # connect to host using ssl
-    imap = imaplib.IMAP4_SSL(host)
-
-# login to server
-    imap.login(login_form.cleaned_data['email'], login_form.cleaned_data['password'])
-
-    imap.select('Inbox')
-    tmp, data = imap.search(None, 'ALL')
-    for num in data[0].split():
-        tmp, data = imap.fetch(num, '(RFC822)')
-        message = ('Message: {0}\n'.format(num))
-        text = (data[0][1])
-        break
-    imap.close()
- """""
 
 
 def delete_mail(request):
-    return render(request,)
+    return render(request, 'mails.html')
 
 
 def log_out(request):
     pass
+
+
+def test(request):
+
+    return render(request, 'test.html')
+
+
