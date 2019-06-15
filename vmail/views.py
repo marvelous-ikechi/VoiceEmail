@@ -1,9 +1,9 @@
-
-
-import imaplib, smtplib, ssl
-from django.shortcuts import render, HttpResponseRedirect
+import smtplib
+import ssl
+from imapclient import IMAPClient
+from django.shortcuts import render
 from .forms import Message, Login
-
+from django.views.generic import View
 
 # Create your views here.
 login_form = Login()
@@ -19,11 +19,14 @@ def index(request):
 
 
 def home_page(request):
+    email = 'not logged in'
     if request.method == 'POST':
         form = Login(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+            request.session['email'] = form.cleaned_data['email']
+            request.session['password'] = form.cleaned_data['password']
 
             try:
                 with smtplib.SMTP_SSL(host, port, context=context) as server:
@@ -31,7 +34,9 @@ def home_page(request):
                     return render(request, 'home_page.html')
             except Exception as e:
                 return render(request, 'index.html', {'exception': e, 'form': login_form})
-    return render(request, 'index.html', {"error": 'your request type is invalid', 'form': login_form })
+        else:
+                return render(request, 'index.html', {'invalid_form': 'Sorry, the form was invalid', 'form': login_form})
+    return render(request, 'index.html', {"error": 'your request type is invalid', 'form': login_form, 'email': email})
 
 
 def compose_view(request):
@@ -43,8 +48,8 @@ def send_mail(request):
         form = Message(request.POST)
         print('entered first if')
         if form.is_valid():
-            sender = form.cleaned_data['sender']
-            password = form.cleaned_data['password']
+            sender = request.session['email']
+            password = request.session['password']
             message = form.cleaned_data['message']
             recipient = form.cleaned_data['recipient']
             try:
@@ -64,8 +69,8 @@ def send_mail(request):
 
 
 def view_mail(request):
-    return render(request, 'mails.html')  # {'message': message, 'text': text })
 
+    return render(request, 'mails.html')  # {'message': message, 'text': text })
 
 
 def delete_mail(request):
@@ -73,7 +78,9 @@ def delete_mail(request):
 
 
 def log_out(request):
-    pass
+    form = Login()
+    del request.session['email']
+    return render(request, 'index.html', {'form': form})
 
 
 def test(request):
@@ -81,3 +88,5 @@ def test(request):
     return render(request, 'test.html')
 
 
+class Mail(View):
+    pass

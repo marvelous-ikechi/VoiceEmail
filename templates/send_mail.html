@@ -29,11 +29,6 @@
         <h4>Send Mail</h4>
 
         {%  csrf_token %}
-
-        <div class="form__group">
-            <label for="sender">{{ form.sender.label }}</label>
-            {{ form.sender}}
-        </div>
          <div  class="form__group">
              <label for="recepient">{{form.recipient.label }}</label>
              {{ form.recipient}}
@@ -45,13 +40,6 @@
          <div class="form__group">
             <label for="messsage">{{ form.message.label }}</label>
             {{ form.message}}
-        </div>
-
-
-        <div  class="form__group">
-             <label for="password">{{ form.password.label }}</label>
-             {{ form.password}}
-
         </div>
         <div  class="form__group" id="submit__group">
             <input type="submit" name="submit" value="Send">
