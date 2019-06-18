@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script rel="script" src="{% static 'js/script.js' %}"></script>
     <title></title>
 </head>
 <body>
@@ -21,12 +22,12 @@
 
         <div class="form__group">
             <label for="username">{{ form.email.label }}</label>
-            {{ form.email}}
+            <span onmouseenter="index_say('Enter your Email Address')">{{ form.email}}</span>
         </div>
 
         <div  class="form__group">
              <label for="password">{{ form.password.label }}</label>
-             {{ form.password}}
+             <span onmouseenter="index_say('enter your password')">{{ form.password}}</span>
 
         </div>
         <div  class="form__group" id="submit__group">
@@ -39,4 +40,9 @@
 </form>
 
 </body>
+<script>
+    say = function () {
+        var words = new SpeechSynthesisUtterance(say)
+    }
+</script>
 </html>

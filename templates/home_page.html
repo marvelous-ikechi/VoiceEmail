@@ -49,30 +49,4 @@
         </div>
     </div>
 </body>
-<script>
-
-
-    let say = function (words){
-        webSpeech(words);
-    }
-
-    let webSpeech = function(words){
-
-        let synth = window.speechSynthesis;
-        let utterance = window.SpeechSynthesisUtterance;
-        utterance.rate = 0.1;
-
-        return synth.speak(new utterance(words));
-    }
-    window.addEventListener('load',function(){
-
-     say("Welcome, You can read mail, create mail, delete mail and sign out on this page, Thank you");
-    })
-
-    var recognition = new SpeechRecognition();
-    recognition.onstart = function () {
-        
-    }
-
-</script>
 </html>

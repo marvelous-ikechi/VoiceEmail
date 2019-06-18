@@ -1,6 +1,7 @@
 import smtplib
 import ssl
-from imapclient import IMAPClient
+import imaplib
+import email
 from django.shortcuts import render
 from .forms import Message, Login
 from django.views.generic import View
@@ -69,8 +70,33 @@ def send_mail(request):
 
 
 def view_mail(request):
+    server = imaplib.IMAP4_SSL('imap.gmail.com', 993)
+    server.login(request.session['email'], request.session['password'])
+    server.select()
 
-    return render(request, 'mails.html')  # {'message': message, 'text': text })
+    typ, message_numbers = server.search(None, 'ALL')
+    for num in message_numbers[0].split():
+        typ, data = server.fetch(num, '(RFC822)')
+        num1 = data[0][1]
+        raw_mail = num1.decode('utf-8')
+        email_message = email.message_from_string(raw_mail)
+        for response_part in data:
+            if isinstance(response_part, tuple):
+                msg = email.message_from_string(response_part[1].decode('utf-8'))
+                email_subject = msg['subject']
+                email_from = msg['from']
+                for i in range(len(response_part)):
+                    print('From : ' + email_from + '\n')
+                    if email_subject is None:
+                        pass
+                    else:
+                        print("Subject:" + email_subject + "\n")
+                    print(msg.get_payload(decode=True))
+        return render(request, 'mails.html', {'email_subject': email_subject, 'email_from': email_from, })  # {'message': message, 'text': text })
+
+
+def details(request):
+    pass
 
 
 def delete_mail(request):
