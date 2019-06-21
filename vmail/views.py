@@ -2,6 +2,7 @@ import smtplib
 import ssl
 import imaplib
 import email
+import string
 from django.shortcuts import render
 from .forms import Message, Login
 from django.views.generic import View
@@ -59,14 +60,11 @@ def send_mail(request):
                     server.sendmail(sender, recipient, message)
                     print(sender,message,recipient,password)
                 return render(request, 'send_mail.html', {'success':"mail sent", 'form':message_form})
-
             except:
                 return render(request, 'send_mail.html', {'exception':"sorry, something isn't right!", 'form': message_form})
         else:
-            print('out of second if')
-            return render(request, 'send_mail.html', {'invalid': 'invalid form', 'form': message_form})
-    print('outside if')
-    return render(request, 'send_mail.html.html', {"error": 'your request type is invalid', 'form': message_form })
+                        return render(request, 'send_mail.html', {'invalid': 'invalid form', 'form': message_form})
+    return render(request, 'send_mail.html.html', {"error": 'your request type is invalid', 'form': message_form})
 
 
 def view_mail(request):
@@ -74,29 +72,53 @@ def view_mail(request):
     server.login(request.session['email'], request.session['password'])
     server.select()
 
-    typ, message_numbers = server.search(None, 'ALL')
+    typ, message_numbers = server.search(None, 'ALL')  # change variable name, and use new name in for loop
+    mail_messages = list()  # create  a list to hold mails
+    email_subjects = list()  # create a list holding email subjects
+    mail_senders = list()  # create a list holding email senders
+    messageID = list()
+    messageList = list()
+
     for num in message_numbers[0].split():
         typ, data = server.fetch(num, '(RFC822)')
-        num1 = data[0][1]
-        raw_mail = num1.decode('utf-8')
-        email_message = email.message_from_string(raw_mail)
         for response_part in data:
             if isinstance(response_part, tuple):
                 msg = email.message_from_string(response_part[1].decode('utf-8'))
                 email_subject = msg['subject']
                 email_from = msg['from']
-                for i in range(len(response_part)):
-                    print('From : ' + email_from + '\n')
-                    if email_subject is None:
-                        pass
-                    else:
-                        print("Subject:" + email_subject + "\n")
-                    print(msg.get_payload(decode=True))
-        return render(request, 'mails.html', {'email_subject': email_subject, 'email_from': email_from, })  # {'message': message, 'text': text })
+                # print(msg['message-id'])
+
+                message = msg.get_payload(decode=True)
+
+                print('From : ' + email_from + '\n')
+                if email_subject is None:
+                    pass
+                else:
+                    print("Subject:" + email_subject + "\n")
+                # print(type(msg['message-id']))
+                if message is not None:
+
+                    mail_messages.append([message.decode('utf-8'), msg['message-id']])
+                    email_subjects.append(email_subject)
+                    mail_senders.append(email_from)
+
+    return render(request, 'mails.html', {'subjects': email_subjects, 'senders': mail_senders, 'messages': mail_messages})  # {'message': message, 'text': text })
 
 
-def details(request):
-    pass
+def details(request, mid):
+    server = imaplib.IMAP4_SSL('imap.gmail.com', 993)
+    server.login('voiceemailproject@gmail.com', 'VoiceEmailProject')
+    server.select()
+    typ, message_num = server.search(None, '(HEADER Message-ID "{}")'.format(mid))  # change variable name, and use new name in for loop
+    for num in message_num:
+        typ, data = server.fetch(num, '(RFC822)')
+        msg = email.message_from_string(data[0][1].decode('utf-8'))
+        msg_body = msg.get_payload(decode=True)
+        body = msg_body.decode('utf-8')
+        subject = msg['subject']
+        email_from = msg['from']
+        time = msg['date']
+    return render(request, 'inbox_details.html', {'body': body, 'subject': subject, 'from': email_from, 'time': time})
 
 
 def delete_mail(request):

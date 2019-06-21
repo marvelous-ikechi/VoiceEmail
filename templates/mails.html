@@ -1,0 +1,16 @@
+<html>
+<head>
+    <title>mails</title>
+</head>
+<body>
+    <div id="app">
+        <h2 id="container">
+            {% for message in messages %}
+
+                <div><a href="{% url 'details' mid=message.1 %}">{{ message.0 |truncatewords:30}}</a></div>
+
+            {% endfor %}
+        </h2>
+    </div>
+</body>
+</html>

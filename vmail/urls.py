@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', views.log_out, name='logout'),
     path('test/', views.test, name='test'),
     path('send_mail/', views.send_mail, name='send_mail'),
+    path('details/<str:mid>/', views.details, name='details'),
 ]

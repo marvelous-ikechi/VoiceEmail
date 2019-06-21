@@ -6,12 +6,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script rel="script" src="{% static 'js/script.js' %}"></script>
 
 </head>
 <body>
     <div id="app">
         <div id="container">
-            <form class="item-container" method='post' action="/send_mail/">
+            <form class="item-container" method='post' action="/send_mail/" onmouseenter="say('Send your mails through this form. Hit enter after typing')">
 
          <div  class="form__error">
             {{ exception }}
@@ -31,18 +32,18 @@
         {%  csrf_token %}
          <div  class="form__group">
              <label for="recepient">{{form.recipient.label }}</label>
-             {{ form.recipient}}
+             <span  onmouseenter="say('Enter your recipient address')"> {{ form.recipient}} </span>
          </div>
            <div class="form__group">
             <label for="subject">{{ form.subject.label }}</label>
-            {{ form.subject}}
+               <span  onmouseenter="say('Type your email subject')"> {{ form.subject}}</span>
         </div>
          <div class="form__group">
             <label for="messsage">{{ form.message.label }}</label>
-            {{ form.message}}
+             <span  onmouseenter="say('Enter your message')">{{ form.message}}</span>
         </div>
         <div  class="form__group" id="submit__group">
-            <input type="submit" name="submit" value="Send">
+            <input type="submit" name="submit" value="Send"  onmouseenter="say('Press enter to send')">
 
         </div>
 

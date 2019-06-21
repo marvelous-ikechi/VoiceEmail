@@ -11,10 +11,10 @@
 <form class="item-container" method='post' action="/home/">
 
          <div  class="form__error">
-            {{ exception }}
+             <span onmouseenter="say('error found')">{{ exception }} </span>
         </div>
          <div  class="form__error">
-            {{ error }}
+             <span>{{ error }}</span>
         </div>
         <h4>Login</h4>
 
@@ -22,12 +22,12 @@
 
         <div class="form__group">
             <label for="username">{{ form.email.label }}</label>
-            <span onmouseenter="index_say('Enter your Email Address')">{{ form.email}}</span>
+            <span onmouseenter="say('Enter your Email Address')">{{ form.email}}</span>
         </div>
 
         <div  class="form__group">
              <label for="password">{{ form.password.label }}</label>
-             <span onmouseenter="index_say('enter your password')">{{ form.password}}</span>
+             <span onmouseenter="say('enter your password')">{{ form.password}}</span>
 
         </div>
         <div  class="form__group" id="submit__group">
