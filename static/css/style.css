@@ -1,6 +1,79 @@
 
 body{
-    background-color:#0d142c;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding:0px;
+    margin: 0px;
+    width:100%;
+    height: 800px;
+    font-size:20px;
+    background-color: #26527f;
+}
+
+#form{
+    background-color: #26527f;
+    font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+    font-size: 18px;
+    color:white;
+    border-color:white;
+}
+
+#app {
+    width:100%;
+    color:white;
+    background-color: #26527f;
+    height:100%;
+}
+
+.app__container {
+    width:70%;
+    margin:auto;
+    padding-top:5%;
+    height:100%;
+}
+.page__buttons {
+    color:white;
+    background-color: #26527f;
+    padding: 10px;
+    border:0.5px solid white;
+    border-radius: 4px;
+}
+.content__block .page__buttons {
+    margin-bottom: 20px;
+    width:200px;
+    text-align:center;
+}
+
+a,a:link,a:visited {
+    color:white;
+}
+a:focus, a:hover {
+    
+}
+
+.each__mail_ a {
+    display: block;
+    margin-bottom:30px;
+    text-decoration: none;
+    border-left: 1px solid white;
+    border-top:1px groove white;
+    padding:4px;
+    border-radius:2px;
+}
+
+.content__spacer_big {
+    width:100%;
+    height:50px;
+}
+
+.content__spacer_small {
+    width:100%;
+    height:30px;
+}
+
+.each__mail_ a  {
+    display: grid;
+    grid-template-columns: 1fr  1.5fr 3fr 1fr;
+    grid-column-gap: 10px;
 }
 .item-container{
     width: 400px;
@@ -16,7 +89,6 @@ body{
 
 
 }
-
 .form__group {
     display:grid;
     grid-template-columns: 1fr 1fr ;
@@ -24,20 +96,6 @@ body{
     margin-bottom:10px;
 }
 
-#submit__group {
-    display:block;
-    float:right;
-
-}
-input[type="submit"] {
-    background-color: cadetblue;
-    color:white;
-    padding:5px 10px;
-    outline:none;
-    border:none;
-    border-radius:5px;
-    margin-right:0px;
-}
 .form__error {
     color:red;
     font-size:12px;
@@ -51,79 +109,8 @@ input[type="submit"] {
     margin-bottom: 10px;
     font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
 }
- body {
-            margin:0px;
-            padding:0px;
-            width:100%;
-            font-family: Norasi;
-        }
-        div#app {
-            width:100%;
-            margin:0px;
-            padding:0px;
-        }
-        div#container {
-            width:80%;
-            margin:auto;
-            margin-top:50px;
-        }
-        .card {
-            border:2px solid grey;
-            box-shadow: 1px 3px 1px grey;
-            padding:40px;
-            color:grey;
-            border-radius:5px;
-            text-align:center;
-        }
-        .card:hover {
 
-        }
-        .card h1 a:link {
-            color:white;
-            text-decoration:none;
-        }
-        .card_row {
-            display:grid;
-            grid-template-columns: 1fr 1fr;
-            grid-column-gap: 10px;
-            margin-bottom:10px;
-            margin-top:40px;
-        }
-        .card h1 {
-            font-size:1.5rem;
-        }
-        #create_mail {
-            background-color: #0d142c;
-        }
-        #read_mail {
-            background-color: darkseagreen;
-
-        }
-        #delete_mail {
-            background-color:cadetblue;
-        }
-        #sign_out {
-            background-color:darkcyan;
-        }
-        #app {
-            width:100%;
-        }
-        #container {
-            width:80%;
-            margin:auto;
-        }
-        form {
-            margin:50px;
-            margin-top:80px;
-        }
-        .form__group {
-            display:grid;
-            grid-template-columns: 1fr 3fr 1fr;
-            grid-column-gap: 10px;
-            margin-bottom:20px;
-        }
-        label{
-            color: aqua;
-            font-family: "Fira Code";
-            font-size: medium;
-        }
+#submit__group {
+    display: block;
+    float: right;
+}

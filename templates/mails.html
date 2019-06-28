@@ -1,16 +1,48 @@
-<html>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>mails</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mails inbox</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <div id="app">
-        <h2 id="container">
-            {% for message in messages %}
+<div id="app">
+    <div class="app__container">
+        <header>
+            <button class="page__buttons" style="font-size:20px;">Mail box</button>
+        </header>
 
-                <div><a href="{% url 'details' mid=message.1 %}">{{ message.0 |truncatewords:30}}</a></div>
 
-            {% endfor %}
-        </h2>
+        <section>
+            <p class="intro__text">This inbox contains {{ count }} message(s). Press tab to go through mails and enter
+                to read a mail</p>
+            <div class="content__spacer_big"></div>
+            <div class="content__block">
+
+                {% for message in message %}
+                    <div class="each__mail_">
+
+                        <a href="{% url 'details' mid=message.1 %}">
+                            <span><b>Mail From :{{ message.3 }}</b> </span>
+                            <span>Mail subject : {{ message.2 }}</span>
+                            <span>Body: {{ message.0 |truncatechars:15 }}</span>
+                            <span>Time : {{ message.4 }}</span>
+                        </a>
+
+                    </div>
+                {% endfor %}
+
+
+            </div>
+            <div class="content__spacer_small"></div>
+            <div class="content__footer">
+                <button class="page__buttons"><a href="{% url 'home' %}">Back to Main Menu</a></button>
+            </div>
+        </section>
     </div>
+</div>
 </body>
 </html>

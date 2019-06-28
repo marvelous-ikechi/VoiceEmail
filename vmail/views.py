@@ -2,7 +2,8 @@ import smtplib
 import ssl
 import imaplib
 import email
-import string
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from django.shortcuts import render
 from .forms import Message, Login
 from django.views.generic import View
@@ -29,7 +30,6 @@ def home_page(request):
             password = form.cleaned_data['password']
             request.session['email'] = form.cleaned_data['email']
             request.session['password'] = form.cleaned_data['password']
-
             try:
                 with smtplib.SMTP_SSL(host, port, context=context) as server:
                     server.login(email, password)
@@ -37,8 +37,8 @@ def home_page(request):
             except Exception as e:
                 return render(request, 'index.html', {'exception': e, 'form': login_form})
         else:
-                return render(request, 'index.html', {'invalid_form': 'Sorry, the form was invalid', 'form': login_form})
-    return render(request, 'index.html', {"error": 'your request type is invalid', 'form': login_form, 'email': email})
+            return render(request, 'index.html', {'invalid_form': 'Sorry, the form was invalid', 'form': login_form})
+    return render(request, 'home_page.html')
 
 
 def compose_view(request):
@@ -54,71 +54,85 @@ def send_mail(request):
             password = request.session['password']
             message = form.cleaned_data['message']
             recipient = form.cleaned_data['recipient']
+            subject = form.cleaned_data['subject']
             try:
-                with smtplib.SMTP_SSL(host, port, context=context) as server:
-                    server.login(sender, password)
-                    server.sendmail(sender, recipient, message)
-                    print(sender,message,recipient,password)
-                return render(request, 'send_mail.html', {'success':"mail sent", 'form':message_form})
-            except:
-                return render(request, 'send_mail.html', {'exception':"sorry, something isn't right!", 'form': message_form})
+                msg = MIMEMultipart('alternative')
+                msg['Subject'] = subject
+                msg['From'] = sender
+                msg['To'] = recipient
+                part = MIMEText(message, 'plain')
+                msg.attach(part)
+                server = smtplib.SMTP_SSL(host, port)
+                server.login(sender, password)
+                mail = msg.as_string()
+                server.sendmail(sender, recipient, mail)
+                print(mail)
+                return render(request, 'send_mail.html', {'success': "mail sent", 'form': message_form})
+            except Exception as e:
+                return render(request, 'send_mail.html', {'exception': "sorry, {}".format(e), 'form': message_form})
         else:
-                        return render(request, 'send_mail.html', {'invalid': 'invalid form', 'form': message_form})
+            return render(request, 'send_mail.html', {'invalid': 'invalid form', 'form': message_form})
     return render(request, 'send_mail.html.html', {"error": 'your request type is invalid', 'form': message_form})
 
 
 def view_mail(request):
     server = imaplib.IMAP4_SSL('imap.gmail.com', 993)
     server.login(request.session['email'], request.session['password'])
-    server.select()
+    server.select('"Inbox"')
+    count = server.select('"Inbox"')
+    number_of_mails = count[1][0]
 
-    typ, message_numbers = server.search(None, 'ALL')  # change variable name, and use new name in for loop
+    typ1, message_numbers = server.search(None, 'ALL')  # change variable name, and use new name in for loop
     mail_messages = list()  # create  a list to hold mails
     email_subjects = list()  # create a list holding email subjects
     mail_senders = list()  # create a list holding email senders
-    messageID = list()
-    messageList = list()
 
     for num in message_numbers[0].split():
         typ, data = server.fetch(num, '(RFC822)')
-        for response_part in data:
-            if isinstance(response_part, tuple):
-                msg = email.message_from_string(response_part[1].decode('utf-8'))
-                email_subject = msg['subject']
-                email_from = msg['from']
-                # print(msg['message-id'])
+        msg = email.message_from_string(data[0][1].decode('utf-8'))
+        email_subject = msg['subject']
+        email_from = msg['from']
+        # print(msg['message-id'])
+        print('From : ' + email_from + '\n')
+        print("Subject:" + email_subject + "\n")
 
-                message = msg.get_payload(decode=True)
+        if msg.is_multipart():
+            for part in msg.walk():
+                message = part.get_payload(decode=True)
+                if msg['Subject'] and msg['From'] and message is not None:
+                    mail_messages.append(
+                        [message.decode('utf-8'), msg['message-id'], msg['Subject'], msg['From'][:-10], msg['date'][17:-12]])
+                    print((mail_messages[0][3])[:-10])
+        #  email_subjects.append(email_subject)
+        #  mail_senders.append(email_from)
 
-                print('From : ' + email_from + '\n')
-                if email_subject is None:
-                    pass
-                else:
-                    print("Subject:" + email_subject + "\n")
-                # print(type(msg['message-id']))
-                if message is not None:
-
-                    mail_messages.append([message.decode('utf-8'), msg['message-id']])
-                    email_subjects.append(email_subject)
-                    mail_senders.append(email_from)
-
-    return render(request, 'mails.html', {'subjects': email_subjects, 'senders': mail_senders, 'messages': mail_messages})  # {'message': message, 'text': text })
+    return render(request, 'mails.html',
+                  {'subject': email_subjects, 'sender': (mail_messages[0][3])[:-10], 'message': mail_messages,
+                   'count': number_of_mails.decode('utf-8')})
 
 
 def details(request, mid):
     server = imaplib.IMAP4_SSL('imap.gmail.com', 993)
-    server.login('voiceemailproject@gmail.com', 'VoiceEmailProject')
-    server.select()
-    typ, message_num = server.search(None, '(HEADER Message-ID "{}")'.format(mid))  # change variable name, and use new name in for loop
+    server.login(request.session['email'], request.session['password'])
+    server.select('"[Gmail]/All Mail"')
+    message_details = list()
+    typ, message_num = server.search(None, '(HEADER Message-ID "{}")'.format(
+        mid))  # change variable name, and use new name in for loop
     for num in message_num:
         typ, data = server.fetch(num, '(RFC822)')
         msg = email.message_from_string(data[0][1].decode('utf-8'))
-        msg_body = msg.get_payload(decode=True)
-        body = msg_body.decode('utf-8')
         subject = msg['subject']
         email_from = msg['from']
         time = msg['date']
-    return render(request, 'inbox_details.html', {'body': body, 'subject': subject, 'from': email_from, 'time': time})
+        if msg.is_multipart():
+            for part in msg.walk():
+                msg_body = part.get_payload(decode=True)
+                if msg_body is not None:
+                    message_details.append([email_from, msg_body, subject, time])
+
+    return render(request, 'inbox_details.html',
+                  {'body': message_details[0][1].decode('utf-8'), 'subject': subject, 'from': email_from,
+                   'time': time})
 
 
 def delete_mail(request):
@@ -132,7 +146,6 @@ def log_out(request):
 
 
 def test(request):
-
     return render(request, 'test.html')
 
 

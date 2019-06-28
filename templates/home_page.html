@@ -1,52 +1,50 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script rel="script" src="{% static 'js/script.js' %}"></script>
-    <meta charset="UTF-8">
-    <title>Home</title>
 </head>
 <body>
+<div id="app">
+    <div class="app__container">
+        <header>
+            <button class="page__buttons" style="font-size:20px;">Action Center</button>
+        </header>
 
-    <div id="app">
 
-        <div id="container">
+        <section>
+            <br>
+            <p class="intro__text">You can choose from our options what to do. Press tab to continue</p>
+            <div class="content__spacer_big"></div>
 
-            <div id="card_holder">
+            <div class="content__block" style="margin-left:150px;">
 
-                <div class="card_row">
+                <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Create Mail');" onfocus="say('Create Mail');
+"><a href="{% url 'compose' %}">Create Mail</a></button>
+                <br>
+                <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Read Mail');"
+                        onfocus="say('Read Mail');"><a href="{% url 'inbox' %}">Read Mail</a></button>
+                <br>
+                <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Delete Mail');"
+                        onfocus="say('Delete Mail');"><a href=" #
+                ">Delete Mail</a></button>
+                <br>
+                <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Sign Out');"
+                        onfocus="say('Sign Out');"><a href="
+                {% url 'logout' %}">Sign Out</a></button>
 
-                     <div class="card" id="create_mail" onmouseenter="say('Create Mail');">
-                        <h1>
-                            <a href="{% url 'compose' %}">CREATE MAIL</a>
-                        </h1>
-                    </div>
-
-                     <div class="card" id="read_mail" onmouseenter="say('Read Mail');">
-                        <h1>
-                            <a href="{% url 'inbox' %}">READ MAIL</a>
-                        </h1>
-                    </div>
-
-                </div>
-
-                <div class="card_row">
-
-                     <div class="card" id="delete_mail" onmouseenter="say('Delete Mail');">
-                        <h1>
-                            <a href="{% url 'trash' %}">DELETE MAIL</a>
-                        </h1>
-                    </div>
-
-                     <div class="card" id="sign_out" onmouseenter="say('Sign out');">
-                        <h1>
-                            <a href="{% url 'logout' %}">SIGN OUT</a>
-                        </h1>
-                    </div>
-                </div>
             </div>
-        </div>
+
+            <div class="content__spacer_small"></div>
+
+        </section>
     </div>
+</div>
 </body>
 </html>

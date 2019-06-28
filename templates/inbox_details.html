@@ -1,14 +1,46 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Inbox</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    Time : {{ time }}<br>
-    Mail From :{{ from }}<br>
-    Mail subject : {{ subject }}<br>
-     Mail content : {{ body }}
+    <div id="app">
+        <div class="app__container">
+            <header>
+                <button class="page__buttons" style="font-size:20px;">Mail box</button>
+            </header>
 
+
+            <section>
+                <p class="intro__text">Message from <b></b>. Press tab to  read mail details</p>
+                <div class="content__spacer_big"></div>
+
+                <div class="content__block">
+                    
+                    <p>Message Subject:  {{ subject }}</p>
+                    <p>Sender Email:   {{ from }}</p>
+                    <p>Date and Time: {{ time }}</p>
+                    <br>
+                    <div style="width:70%; border:1px solid white;border-radius:5px;padding:5px;">
+                        <p>{{ body }}</p>
+                    </div>
+                    
+                </div>
+
+                <div class="content__spacer_small"></div>
+
+                <div class="content__footer">
+                    <button class="page__buttons"><a href="{% url 'home' %}">Back to Main Menu</a></button>
+                </div>
+
+            </section>
+        </div>
+    </div>
 </body>
 </html>
