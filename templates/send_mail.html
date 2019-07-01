@@ -40,7 +40,7 @@
         </div>
          <div class="form__group">
             <label for="messsage">{{ form.message.label }}</label>
-             <span  onmouseenter="say('Enter your message')">{{ form.message}}</span>
+             <span  onmouseenter="say('Enter your message')" ondblclick="speech_recognition()">{{ form.message}}</span>
         </div>
         <div  class="form__group" id="submit__group">
             <input type="submit" name="submit" value="Send"  onmouseenter="say('Press enter to send')">

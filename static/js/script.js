@@ -15,3 +15,21 @@ let webSpeech = function(words){
 
      say("You can read mails, create mails, delete mails and sign out on this page.");
     })
+
+function speech_recognition(){
+    var recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.lang = 'en-Us';
+    recognition.start();
+
+    recognition.onresult = function (e) {
+        document.getElementById('message').value = e.results[0][0].transcript;
+    }
+    recognition.onerror = function(e){
+        recognition.stop();
+    }
+
+
+}

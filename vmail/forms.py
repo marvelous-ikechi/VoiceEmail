@@ -7,6 +7,6 @@ class Login(forms.Form):
 
 
 class Message(forms.Form):
-    subject = forms.CharField(required=False)
-    message = forms.CharField(widget=forms.Textarea)
-    recipient = forms.EmailField(required=False)
+    subject = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'subject'}))
+    message = forms.CharField(widget=forms.Textarea(attrs={'id': 'message'}))
+    recipient = forms.EmailField(required=False, widget=forms.TextInput(attrs={'id': 'recipient'}))
