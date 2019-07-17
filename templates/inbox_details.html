@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Inbox</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script rel="script" src="{% static 'js/script.js' %}"></script>
 </head>
 <body>
     <div id="app">
@@ -23,12 +24,12 @@
 
                 <div class="content__block">
                     
-                    <p>Message Subject:  {{ subject }}</p>
-                    <p>Sender Email:   {{ from }}</p>
-                    <p>Date and Time: {{ time }}</p>
+                    <p ondblclick="say(this.innerText)">Message Subject:  {{ subject }}</p>
+                    <p ondblclick="say(this.innerText)">Sender Email:   {{ from }}</p>
+                    <p ondblclick="say(this.innerText)">Date and Time: {{ time }}</p>
                     <br>
                     <div style="width:70%; border:1px solid white;border-radius:5px;padding:5px;">
-                        <p>{{ body }}</p>
+                        <p ondblclick="say(this.innerText)">{{ body|safe }}</p>
                     </div>
                     
                 </div>

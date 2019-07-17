@@ -47,7 +47,7 @@ a,a:link,a:visited {
     color:white;
 }
 a:focus, a:hover {
-    
+    color: wheat;
 }
 
 .each__mail_ a {
@@ -113,4 +113,13 @@ a:focus, a:hover {
 #submit__group {
     display: block;
     float: right;
+}
+
+button#btn__delete{
+    font-size: 15px;
+    padding: 13px;
+    margin-bottom: 10px;
+    background: skyblue;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 7.5px;
 }

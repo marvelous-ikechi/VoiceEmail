@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mails inbox</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script rel="script" src="{% static 'js/script.js' %}"></script>
 </head>
 <body>
 <div id="app">
@@ -31,15 +32,18 @@
                             <span>Body: {{ message.0 |truncatechars:15 }}</span>
                             <span>Time : {{ message.4 }}</span>
                         </a>
-
+                        
                     </div>
+                    <button id='btn__delete'><a href="{%url 'trash' %}">Delete mail</a></button>
                 {% endfor %}
 
-
+          
+                
+    
             </div>
             <div class="content__spacer_small"></div>
             <div class="content__footer">
-                <button class="page__buttons"><a href="{% url 'home' %}">Back to Main Menu</a></button>
+                <button class="page__buttons" onmouseenter="say('delete mail');"><a href="{% url 'home' %}">Back to Main Menu</a></button>
             </div>
         </section>
     </div>
