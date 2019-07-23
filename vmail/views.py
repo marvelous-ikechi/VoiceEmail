@@ -2,6 +2,7 @@ import smtplib
 import ssl
 import imaplib
 import email
+import imapclient
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.shortcuts import render
@@ -77,10 +78,19 @@ def send_mail(request):
 
 def view_mail(request):
     server = imaplib.IMAP4_SSL('imap.gmail.com', 993)
+    imapClientServer = imapclient.IMAPClient('imap.gmail.com', ssl=True)
+    imapClientServer.login(request.session['email'], request.session['password'])
     server.login(request.session['email'], request.session['password'])
     server.select('"Inbox"')
-    count = server.select('"Inbox"')
-    number_of_mails = count[1][0]
+
+    select_info = imapClientServer.select_folder('INBOX')
+    messages = imapClientServer.search('ALL')
+
+    count = select_info[b'EXISTS']
+
+   # for msgid,data in imapClientServer.fetch(messages, ['ENVELOPE']).items: 
+   #    message_id = msgid #message_id stores the message id of each mesasge in the loop
+
 
     typ1, message_numbers = server.search(None, 'ALL')  # change variable name, and use new name in for loop
     mail_messages = list()  # create  a list to hold mails
@@ -101,14 +111,14 @@ def view_mail(request):
                 message = part.get_payload(decode=True)
                 if msg['Subject'] and msg['From'] and message is not None:
                     mail_messages.append(
-                        [message.decode('utf-8'), msg['message-id'], msg['Subject'], msg['From'][:-10], msg['date'][17:-12]])
+                        [message.decode('utf-8'), msg['message-id'], msg['Subject'], msg['From'][:-10], msg['date'][17:-12], num.decode()] )
                     print((mail_messages[0][3])[:-10])
         #  email_subjects.append(email_subject)
         #  mail_senders.append(email_from)
 
     return render(request, 'mails.html',
                   {'subject': email_subjects, 'sender': (mail_messages[0][3])[:-10], 'message': mail_messages,
-                   'count': number_of_mails.decode('utf-8')})
+                   'count': count})
 
 
 def details(request, mid):
@@ -135,19 +145,15 @@ def details(request, mid):
                    'time': time})
 
 
-def delete_mail(request):
-    return render(request, 'mails.html')
+def delete_mail(request, mid):
+    server = imapclient.IMAPClient('imap.gmail.com')
+    server.login(request.session['email'], request.session['password'])
+    server.select_folder('inbox')
+    server.delete_messages(mid)
+    return render(request, 'trash_success.html')
 
 
 def log_out(request):
     form = Login()
     del request.session['email']
     return render(request, 'index.html', {'form': form})
-
-
-def test(request):
-    return render(request, 'test.html')
-
-
-class Mail(View):
-    pass

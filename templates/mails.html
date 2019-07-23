@@ -26,7 +26,7 @@
                 {% for message in message %}
                     <div class="each__mail_">
 
-                        <a href="{% url 'details' mid=message.1 %}">
+                        <a href="{% url 'details' mid=message.1 %}" onmouseenter="say(this.innerText);"  onmouseout="mute();">
                             <span><b>Mail From :{{ message.3 }}</b> </span>
                             <span>Mail subject : {{ message.2 }}</span>
                             <span>Body: {{ message.0 |truncatechars:15 }}</span>
@@ -34,7 +34,7 @@
                         </a>
                         
                     </div>
-                    <button id='btn__delete'><a href="{%url 'trash' %}">Delete mail</a></button>
+                    <button id='btn__delete' onmouseenter="say('Delete Mail');"><a href="{%url 'trash' mid=message.5 %}">Delete mail</a></button>
                 {% endfor %}
 
           

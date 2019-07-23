@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Send Message</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script rel="script" src="{% static 'js/script.js' %}"></script>
 
@@ -12,7 +12,7 @@
 <body>
     <div id="app">
         <div id="container">
-            <form class="item-container" id="form" method='post' action="/send_mail/" onmouseenter="say('Send your mails through this form. Hit enter after typing')">
+            <form class="item-container" id="form" method='post' action="/send_mail/">
 
          <div  class="form__error">
             {{ exception }}
@@ -46,10 +46,13 @@
             <input type="submit" name="submit" value="Send"  onmouseenter="say('Press enter to send')">
 
         </div>
-
+        <div class="content__footer">
+                <button class="page__buttons" onmouseenter="say('Back to home page');"><a href="{% url 'home' %}">Back to Main Menu</a></button>
+            </div>
 
 
 </form>
+
         </div>
     </div>
 </body>
