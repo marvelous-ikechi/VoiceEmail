@@ -22,10 +22,33 @@ function speech_recognition(onResult, onError, options) {
     recognition.start();
 
     recognition.onresult = function (e) {
-        onResult(e.results[0][0].transcript);
+        onResult = (e.results[0][0].transcript);
+
+
     }
     recognition.onerror = function (e) {
         recognition.stop();
         onError(e);
     }
+
+}
+
+
+function speechRecognitionSendEMail(onResult, onError, options) {
+    const recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.lang = 'en-US';
+    recognition.start();
+
+    recognition.onresult = function (e) {
+        onResult = (e.results[0][0].transcript);
+        document.getElementById('message').innerHTML = onResult
+    }
+    recognition.onerror = function (e) {
+        recognition.stop();
+        onError(e);
+    }
+
 }
