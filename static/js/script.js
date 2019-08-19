@@ -15,15 +15,14 @@ function mute(){
 
 function speech_recognition(onResult, onError, options) {
     const recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
+    recognition.continuous = options.continuous;
+    recognition.interimResults = options.interimResults;
 
     recognition.lang = 'en-US';
     recognition.start();
 
     recognition.onresult = function (e) {
-        onResult = (e.results[0][0].transcript);
-
+        onResult(e.results[0][0].transcript);
 
     }
     recognition.onerror = function (e) {
@@ -34,7 +33,7 @@ function speech_recognition(onResult, onError, options) {
 }
 
 
-function speechRecognitionSendEMail(onResult, onError, options) {
+function speechRecognitionSendEMail() {
     const recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
@@ -43,12 +42,11 @@ function speechRecognitionSendEMail(onResult, onError, options) {
     recognition.start();
 
     recognition.onresult = function (e) {
-        onResult = (e.results[0][0].transcript);
-        document.getElementById('message').innerHTML = onResult
+        const transcript = e.results[0][0].transcript;
+        document.getElementById('message').innerHTML = transcript;
     }
     recognition.onerror = function (e) {
         recognition.stop();
-        onError(e);
     }
 
 }

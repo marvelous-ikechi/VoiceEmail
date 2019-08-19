@@ -19,12 +19,6 @@
             const element = document.getElementsByTagName("a").namedItem(actionId);
             element.click();
         }
-        const startCommandRecognition = () => {
-            speech_recognition(handleSpeechSelection, handleSpeechRecognitionError, {
-                continous: true,
-                interimResults: false,
-            });
-        }
         const handleSpeechSelection = selection => {
             switch (String(selection).toLowerCase()) {
                 case "create mail":
@@ -41,51 +35,52 @@
                     startCommandRecognition();
             }
         }
-        window.addEventListener('load', function () {
-            say("You can read mails, create mails, delete mails and sign out on this page.", function () {
-                speech_recognition(handleSpeechSelection, handleSpeechRecognitionError, {
-                    continous: true,
-                    interimResults: false,
-                });
+        const startCommandRecognition = () => {
+            speech_recognition(handleSpeechSelection, handleSpeechRecognitionError, {
+                continuous: true,
+                interimResults: false,
             });
+        }
+        window.addEventListener('load', function () {
+            say("You can read mails, create mails, delete mails and sign out on this page.");
             startCommandRecognition();
         })
     </script>
 </head>
 
 <body>
-    <div id="app">
-        <div class="app__container">
-            <header>
-                <button class="page__buttons" style="font-size:20px;">Action Center</button>
-            </header>
+<div id="app">
+    <div class="app__container">
+        <header>
+            <button class="page__buttons" style="font-size:20px;">Action Center</button>
+        </header>
 
 
-            <section>
-                <br>
-                <p class="intro__text">You can choose from our options what to do. Press tab to continue</p>
-                <div class="content__spacer_big"></div>
+        <section>
+            <br>
+            <p class="intro__text">You can choose from our options what to do. Press tab to continue</p>
+            <div class="content__spacer_big"></div>
 
-                <div class="content__block" style="margin-left:150px;">
+            <div class="content__block" style="margin-left:150px;">
 
-                    <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Create Mail');" onfocus="say('Create Mail');
+                <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Create Mail');" onfocus="say('Create Mail');
 "><a href="{% url 'compose' %}" name="link-create-mail">Create Mail</a></button>
-                    <br>
-                    <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Read Mail');"
+                <br>
+                <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Read Mail');"
                         onfocus="say('Read Mail');"><a href="{% url 'inbox' %}" name="link-read-mail">Read
-                            Mail</a></button>
-                    <br>
-                    <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Sign Out');"
+                    Mail</a></button>
+                <br>
+                <button class="page__buttons" style="font-size:20px;" onmouseenter="say('Sign Out');"
                         onfocus="say('Sign Out');"><a href="
                 {% url 'logout' %}" name="link-sign-out">Sign Out</a></button>
 
-                </div>
+            </div>
 
-                <div class="content__spacer_small"></div>
+            <div class="content__spacer_small"></div>
 
-            </section>
-        </div>
+        </section>
     </div>
+</div>
 </body>
 
 </html>

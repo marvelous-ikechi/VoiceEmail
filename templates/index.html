@@ -2,9 +2,10 @@
 <!Doctype html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Login</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script rel="script" src="{% static 'js/script.js' %}"></script>
-    <title></title>
 </head>
 <body>
 
@@ -21,7 +22,7 @@
 
         <div class="form__group">
             <label for="username">{{ form.email.label }}</label>
-            <span onmouseenter="say('Enter your Email Address')">{{ form.email}}</span>
+            <span onmouseenter="say('Enter your Email Address');">{{ form.email}}</span>
         </div>
 
         <div  class="form__group">
@@ -30,7 +31,7 @@
 
         </div>
         <div  class="form__group" id="submit__group">
-            <input type="submit" name="submit" value="Login">
+            <input type="submit" name="submit" value="Login" onmouseenter="say('click to login')">
 
 
         </div>
@@ -40,9 +41,4 @@
 </form>
 
 </body>
-<script>
-    say = function () {
-        var words = new SpeechSynthesisUtterance(say)
-    }
-</script>
 </html>

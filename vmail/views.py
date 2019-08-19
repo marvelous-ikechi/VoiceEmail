@@ -7,7 +7,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.shortcuts import render
 from .forms import Message, Login
-from django.views.generic import View
 
 # Create your views here.
 login_form = Login()
